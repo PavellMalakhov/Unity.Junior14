@@ -249,7 +249,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!58 &165408829
 CircleCollider2D:
@@ -295,7 +295,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 165408823}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: d6b14ed455f749e4ab7c8d2d5e9c9362, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -321,6 +321,31 @@ CapsuleCollider2D:
   m_Offset: {x: 0.06216097, y: 2.857728}
   m_Size: {x: 2.5549955, y: 5.105402}
   m_Direction: 0
+--- !u!114 &165408832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165408823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90df56e766d95b4468e645fd67087549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coin: 0
+--- !u!114 &165408833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165408823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b83ae30289bad45985b467681a1907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &184075118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4636,6 +4661,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2cea936164b096a479ce05ba8710f5fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 165408827}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2cea936164b096a479ce05ba8710f5fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 165408832}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 2cea936164b096a479ce05ba8710f5fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 165408833}
     - targetCorrespondingSourceObject: {fileID: -5112963278063194709, guid: 2cea936164b096a479ce05ba8710f5fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 973099226}
@@ -7865,7 +7896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5832951256262010218, guid: e785cf9d3a745e14dbce1f40aa8232dd, type: 3}
       propertyPath: m_Name
-      value: Coin
+      value: Coin (7)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7881,10 +7912,10 @@ SceneRoots:
   - {fileID: 653972187}
   - {fileID: 1363697317}
   - {fileID: 52224902}
-  - {fileID: 1398588593681606073}
   - {fileID: 1343795820}
   - {fileID: 1105718300}
   - {fileID: 746237910}
   - {fileID: 184075118}
   - {fileID: 1571391716}
   - {fileID: 1342684899}
+  - {fileID: 1398588593681606073}

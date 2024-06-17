@@ -1,18 +1,19 @@
 using UnityEngine;
+using System;
 
 public class Mover : MonoBehaviour
 {
+    private const string Horizontal = nameof(Horizontal);
+    private const string Jump = nameof(Jump);
+
+    private static readonly int IsWalk = Animator.StringToHash(nameof(IsWalk));
+
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Animator _animator;
     [SerializeField] private float _moveSpeed = 5;
     [SerializeField] private float _jumpForce = 450;
     [SerializeField] private bool _isGround = false;
     [SerializeField] private bool _isJump = false;
-
-    private const string Horizontal = nameof(Horizontal);
-    private const string Jump = nameof(Jump);
-
-    private static readonly int IsWalk = Animator.StringToHash(nameof(IsWalk));
 
     private Vector2 _directionMove;
     private Vector3 _scaleLeft = new Vector3(0.5f, 0.5f, 1f);
@@ -22,7 +23,7 @@ public class Mover : MonoBehaviour
     {
         Move();
 
-        if (Input.GetAxis(Jump) == 1 && _isGround)
+        if (Convert.ToBoolean(Input.GetAxis(Jump)) && _isGround)
         {
             _isJump = true;
         }
@@ -45,6 +46,15 @@ public class Mover : MonoBehaviour
         {
             _isGround = true;
         }
+        else
+        {
+            _isGround = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _isGround = false;
     }
 
     private void Move()
@@ -62,16 +72,16 @@ public class Mover : MonoBehaviour
             transform.Translate(_directionMove * _moveSpeed * Time.deltaTime);
 
             _animator.SetBool(IsWalk, true);
-        }
 
-        if (_directionMove.x < 0)
-        {
-            transform.localScale = _scaleLeft; 
-        }
+            if (_directionMove.x < 0)
+            {
+                transform.localScale = _scaleLeft;
+            }
 
-        if (_directionMove.x > 0)
-        {
-            transform.localScale = _scaleRight;
+            if (_directionMove.x > 0)
+            {
+                transform.localScale = _scaleRight;
+            }
         }
     }
 }
