@@ -1,87 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Mover : MonoBehaviour
 {
-    private const string Horizontal = nameof(Horizontal);
-    private const string Jump = nameof(Jump);
-
-    private static readonly int IsWalk = Animator.StringToHash(nameof(IsWalk));
-
     [SerializeField] private Rigidbody2D _rigidbody2D;
-    [SerializeField] private Animator _animator;
     [SerializeField] private float _moveSpeed = 5;
-    [SerializeField] private float _jumpForce = 450;
-    [SerializeField] private bool _isGround = false;
-    [SerializeField] private bool _isJump = false;
+    [SerializeField] private float _jumpForce = 9;
 
     private Vector2 _directionMove;
     private Vector3 _scaleLeft = new Vector3(0.5f, 0.5f, 1f);
     private Vector3 _scaleRight = new Vector3(-0.5f, 0.5f, 1f);
 
-    private void Update()
+    public void Jump()
     {
-        Move();
-
-        if (Convert.ToBoolean(Input.GetAxis(Jump)) && _isGround)
-        {
-            _isJump = true;
-        }
+        _rigidbody2D.velocity = new Vector2(0, _jumpForce);
     }
 
-    private void FixedUpdate()
+    public void Move(float direction)
     {
-        if (_isJump)
-        {
-            _isGround = false;
-            _isJump = false;
+        _directionMove = new Vector2(direction, 0);
 
-            _rigidbody2D.AddForce(new Vector2(0, _jumpForce));
+        transform.Translate(_directionMove * _moveSpeed * Time.deltaTime);
+
+        if (_directionMove.x < 0)
+        {
+            transform.localScale = _scaleLeft;
         }
-    }
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.TryGetComponent(out Ground ground))
+        if (_directionMove.x > 0)
         {
-            _isGround = true;
-        }
-        else
-        {
-            _isGround = false;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        _isGround = false;
-    }
-
-    private void Move()
-    {
-        _directionMove = new Vector2(Input.GetAxis(Horizontal), 0);
-
-        if (_directionMove.magnitude == 0)
-        {
-            _animator.SetBool(IsWalk, false);
-
-            return;
-        }
-        else
-        {
-            transform.Translate(_directionMove * _moveSpeed * Time.deltaTime);
-
-            _animator.SetBool(IsWalk, true);
-
-            if (_directionMove.x < 0)
-            {
-                transform.localScale = _scaleLeft;
-            }
-
-            if (_directionMove.x > 0)
-            {
-                transform.localScale = _scaleRight;
-            }
+            transform.localScale = _scaleRight;
         }
     }
 }

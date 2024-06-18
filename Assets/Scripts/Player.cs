@@ -2,20 +2,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private int _coin = 0;
+    private readonly int IsWalk = Animator.StringToHash(nameof(IsWalk));
 
-    private void OnEnable()
-    {
-        CollisionPlayer.CoinPick += AddCoin;
-    }
+    [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private InputReader _inputReader;
+    [SerializeField] private Mover _mover;
+    [SerializeField] private Animator _animator;
 
-    private void OnDisable()
+    private void FixedUpdate()
     {
-        CollisionPlayer.CoinPick -= AddCoin;
-    }
+        if (_inputReader.Direction != 0)
+        {
+            _animator.SetBool(IsWalk, true);
 
-    private void AddCoin()
-    {
-        _coin++;
+            _mover.Move(_inputReader.Direction);
+        }
+        else
+        {
+            _animator.SetBool(IsWalk, false);
+        }
+
+        if (_inputReader.GetIsJump() && _groundDetector.IsGround)
+        {
+            _mover.Jump();
+        }
     }
 }
