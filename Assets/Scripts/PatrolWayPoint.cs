@@ -8,13 +8,13 @@ public class PatrolWayPoint : MonoBehaviour
     [SerializeField] private int _indexWayPoint;
     [SerializeField] private float _liftForce = 5;
     [SerializeField] private Rigidbody2D _rigidbody2D;
+    [SerializeField] private RaycastHit2D _hitinfo;
+    [SerializeField] private Transform _player;
 
     private Vector3 _scaleLeft = new Vector3(-0.5f, 0.5f, 1f);
     private Vector3 _scaleRight = new Vector3(0.5f, 0.5f, 1f);
-    [SerializeField] private RaycastHit2D _hitinfo;
-    [SerializeField] private Transform _player;
-    private bool _isPatrol = true;
-    [SerializeField] private float _checkDistace = 100f;
+    private bool _isPatroling = true;
+    private Vector2 targetPoint = Vector2.zero;
 
     public void Awake()
     {
@@ -33,7 +33,7 @@ public class PatrolWayPoint : MonoBehaviour
             _indexWayPoint = ++_indexWayPoint % _wayPoints.Length;
         }
 
-        if (_isPatrol)
+        if (_isPatroling)
         {
             transform.position = Vector2.MoveTowards(transform.position, _wayPoints[_indexWayPoint].position, _moveSpeed * Time.deltaTime);
         }
@@ -60,26 +60,45 @@ public class PatrolWayPoint : MonoBehaviour
 
     private void Pursuit()
     {
-        _hitinfo = Physics2D.Raycast(transform.position, _player.position - transform.position, _checkDistace, 1);
+        _hitinfo = Physics2D.Raycast(transform.position, _player.position - transform.position, (_player.position - transform.position).magnitude, 1);
         Debug.DrawRay(transform.position, _player.position - transform.position, Color.red);
 
-        //Debug.Log(_hitinfo.collider?.name);
+        if (_hitinfo.collider == null && _isPatroling == true)
+        {
+            Debug.Log(gameObject.name + ": Увидел тебя!");
+            targetPoint = _player.position;
+            _isPatroling = false;
+            _liftForce = 2f;
+            _rigidbody2D.gravityScale = 0.05f;
+            SetLookDirection(_player.position);
+        }
 
-        if (_hitinfo.collider == null)
+        if (_hitinfo.collider == null && _isPatroling == false)
         {
             Debug.Log(gameObject.name + ": Вижу тебя!");
+            targetPoint = _player.position;
+            transform.position = Vector2.MoveTowards(transform.position, _player.position, _moveSpeed * Time.deltaTime * 2);
+            SetLookDirection(_player.position);
+        }
 
-            //_wayPoints = new Transform[_player.childCount];
+        if (_hitinfo.collider != null && _isPatroling == false)
+        {
+            Debug.Log(gameObject.name + ": Видел тебя тут: " + targetPoint);
+            transform.position = Vector2.MoveTowards(transform.position, targetPoint, _moveSpeed * Time.deltaTime * 2);
+            SetLookDirection(targetPoint);
+        }
+    }
 
-            //for (int i = 0; i < _wayPoints.Length; i++)
-            //{
-            //    _wayPoints[i] = _player.GetChild(i);
-            //}
+    private void SetLookDirection(Vector2 player)
+    {
+        if (transform.position.x < player.x)
+        {
+            transform.localScale = _scaleRight;
+        }
 
-            _isPatrol = false;
-            //_liftForce = 0;
-            //_rigidbody2D.gravityScale = 0.01f;
-            transform.position = Vector2.MoveTowards(transform.position, _player.position, _moveSpeed * Time.deltaTime*10);
+        if (transform.position.x > player.x)
+        {
+            transform.localScale = _scaleLeft;
         }
     }
 }

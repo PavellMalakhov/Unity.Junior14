@@ -8,12 +8,12 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        _collisionDetector.CoinPick += AddCoin;
+        _collisionDetector.CoinPicked += AddCoin;
     }
 
     private void OnDisable()
     {
-        _collisionDetector.CoinPick -= AddCoin;
+        _collisionDetector.CoinPicked -= AddCoin;
     }
 
     private void AddCoin()

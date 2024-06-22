@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -12,20 +11,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Mover _mover;
     [SerializeField] private Animator _animator;
     [SerializeField] private Combat _combat;
-    [SerializeField] private CollisionDetector _collisionDetector;
-
+    
     private float _health = 100f;
     private float _forceAttack = 10f;
-
-    private void OnEnable()
-    {
-        _collisionDetector.FirstKitPick += AddHealth;
-    }
-
-    private void OnDisable()
-    {
-        _collisionDetector.FirstKitPick -= AddHealth;
-    }
 
     private void FixedUpdate()
     {

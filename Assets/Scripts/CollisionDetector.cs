@@ -3,8 +3,8 @@ using System;
 
 public class CollisionDetector : MonoBehaviour
 {
-    public event Action CoinPick;
-    public event Action FirstKitPick;
+    public event Action CoinPicked;
+    public event Action FirstKitPicked;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,14 +12,14 @@ public class CollisionDetector : MonoBehaviour
         {
             Destroy(coin.gameObject);
 
-            CoinPick?.Invoke();
+            CoinPicked?.Invoke();
         }
 
         if (collision.TryGetComponent(out FirstKit firstKit))
         {
             Destroy(firstKit.gameObject);
 
-            FirstKitPick?.Invoke();
+            FirstKitPicked?.Invoke();
         }
     }
 }

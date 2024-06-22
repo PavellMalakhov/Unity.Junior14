@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 
-
 public class InputReader : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
@@ -35,10 +34,5 @@ public class InputReader : MonoBehaviour
         bool localValue = value;
         value = false;
         return localValue;
-    }
-
-    private void Attack()
-    {
-
     }
 }
