@@ -8,6 +8,7 @@ public class InputReader : MonoBehaviour
     private const string Jump = nameof(Jump);
 
     private bool _isJump;
+    private bool _isAttack;
 
     public float Direction { get; private set; }
 
@@ -19,19 +20,25 @@ public class InputReader : MonoBehaviour
         {
             _isJump = true;
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _isAttack = true;
+        }
     }
 
-    //public bool GetIsJump() => GetBoolAsTrigger(ref _isJump);
-
-    public bool GetIsJump()
-    {
-        return GetBoolAsTrigger(ref _isJump);
-    }
+    public bool GetIsJump() => GetBoolAsTrigger(ref _isJump);
+    public bool GetAttack() => GetBoolAsTrigger(ref _isAttack);
 
     private bool GetBoolAsTrigger(ref bool value)
     {
         bool localValue = value;
         value = false;
         return localValue;
+    }
+
+    private void Attack()
+    {
+
     }
 }

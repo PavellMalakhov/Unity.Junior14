@@ -3,9 +3,8 @@ using System;
 
 public class CollisionDetector : MonoBehaviour
 {
-    private bool _isCoinPick = false;
-
     public event Action CoinPick;
+    public event Action FirstKitPick;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,17 +12,14 @@ public class CollisionDetector : MonoBehaviour
         {
             Destroy(coin.gameObject);
 
-            _isCoinPick = true;
+            CoinPick?.Invoke();
         }
-    }
 
-    private void FixedUpdate()
-    {
-        if (_isCoinPick)
+        if (collision.TryGetComponent(out FirstKit firstKit))
         {
-            _isCoinPick = false;
+            Destroy(firstKit.gameObject);
 
-            CoinPick.Invoke();
+            FirstKitPick?.Invoke();
         }
     }
 }
