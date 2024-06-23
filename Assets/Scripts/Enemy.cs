@@ -7,18 +7,16 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Animator _animator;
     [SerializeField] private Collider2D _player;
+    [SerializeField] private Health _health;
 
-    private float _health = 100;
     private float _forceAttack = 10f;
     private Vector2 _directionAttack = new Vector2(10, 10);
 
     public void TakeDamage(float damage)
     {
-        _health -= damage;
-
         _animator.Play(Damage);
 
-        if (_health <= 0)
+        if (_health.TakeDamage(damage))
         {
             Destroy(gameObject);
         }
@@ -28,11 +26,11 @@ public class Enemy : MonoBehaviour
     {
         if (collision.GetInstanceID() == _player.GetInstanceID() && collision.TryGetComponent(out Player player))
         {
+            _animator.Play(HeroAttack);
+
             player.TakeDamage(_forceAttack);
 
             collision.attachedRigidbody.velocity = _directionAttack;
-
-            _animator.Play(HeroAttack);
         }
     }
 }

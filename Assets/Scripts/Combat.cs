@@ -27,9 +27,4 @@ public class Combat : MonoBehaviour
             _enemy.TakeDamage(forceAttack);
         }
     }
-
-    public void TakeDamage(ref float health, float damage)
-    {
-        health -= damage;
-    }
 }

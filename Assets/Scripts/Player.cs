@@ -11,8 +11,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Mover _mover;
     [SerializeField] private Animator _animator;
     [SerializeField] private Combat _combat;
+    [SerializeField] private Health _health;
     
-    private float _health = 100f;
+    //private float _health = 100f;
     private float _forceAttack = 10f;
 
     private void FixedUpdate()
@@ -35,21 +36,16 @@ public class Player : MonoBehaviour
 
         if (_inputReader.GetAttack())
         {
-            _combat.Attack(_forceAttack);
-
             _animator.Play(Attack);
+
+            _combat.Attack(_forceAttack);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        _combat.TakeDamage(ref _health, damage);
-
         _animator.Play(Damage);
-    }
 
-    public void AddHealth()
-    {
-        _health += 100f;
+        _health.TakeDamage(damage);
     }
 }

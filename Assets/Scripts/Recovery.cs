@@ -3,7 +3,7 @@ using UnityEngine;
 public class Recovery : MonoBehaviour
 {
     [SerializeField] private CollisionDetector _collisionDetector;
-    [SerializeField] private Player _player;
+    [SerializeField] private Health _health;
 
     private void OnEnable()
     {
@@ -17,6 +17,6 @@ public class Recovery : MonoBehaviour
 
     public void AddHealth()
     {
-        _player.AddHealth();
+        _health.AddHealth();
     }
 }
