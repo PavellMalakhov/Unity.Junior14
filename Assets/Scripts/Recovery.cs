@@ -15,8 +15,8 @@ public class Recovery : MonoBehaviour
         _collisionDetector.FirstKitPicked -= AddHealth;
     }
 
-    public void AddHealth()
+    public void AddHealth(float amountHealth)
     {
-        _health.AddHealth();
+        _health.AddHealth(amountHealth);
     }
 }

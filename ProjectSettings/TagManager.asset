@@ -13,10 +13,10 @@ TagManager:
   - UI
   - Enemy
   - Player
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - CombatZone
+  - GroundDetector
+  - PlayerDetector
   - 
   - 
   - 

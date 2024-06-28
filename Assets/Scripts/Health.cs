@@ -3,23 +3,21 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _health = 100f;
+    [SerializeField] private float _healthMax = 100f;
+    [SerializeField] private float _healthMin = 0f;
 
-    public void AddHealth()
+    public void AddHealth(float amountHealth)
     {
-        _health += 100f;
+        if (amountHealth > _healthMin)
+        {
+            _health = Mathf.Clamp(_health += amountHealth, _healthMin, _healthMax);
+        }
     }
 
     public bool TakeDamage(float damage)
     {
-        _health -= damage;
+        _health = Mathf.Clamp(_health -= damage, _healthMin, _healthMax);
 
-        if (_health <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return _health <= 0;
     }
 }

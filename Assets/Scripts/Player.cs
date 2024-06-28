@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Combat _combat;
     [SerializeField] private Health _health;
     
-    //private float _health = 100f;
     private float _forceAttack = 10f;
 
     private void FixedUpdate()

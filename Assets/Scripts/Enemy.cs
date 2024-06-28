@@ -6,11 +6,24 @@ public class Enemy : MonoBehaviour
     private readonly int Damage = Animator.StringToHash(nameof(Damage));
 
     [SerializeField] private Animator _animator;
-    [SerializeField] private Collider2D _player;
     [SerializeField] private Health _health;
+    [SerializeField] private Collider2D _enemy;
 
-    private float _forceAttack = 10f;
+    private Collider2D _player;
+    private float _forceAttack = 1f;
     private Vector2 _directionAttack = new Vector2(10, 10);
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Player player) && collision.IsTouching(_enemy))
+        {
+            _animator.Play(HeroAttack);
+
+            player.TakeDamage(_forceAttack);
+
+            collision.attachedRigidbody.velocity = _directionAttack;
+        }
+    }
 
     public void TakeDamage(float damage)
     {
@@ -22,15 +35,8 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void SetCollider2DPlayerHitBox(Collider2D collision)
     {
-        if (collision.GetInstanceID() == _player.GetInstanceID() && collision.TryGetComponent(out Player player))
-        {
-            _animator.Play(HeroAttack);
-
-            player.TakeDamage(_forceAttack);
-
-            collision.attachedRigidbody.velocity = _directionAttack;
-        }
+        _player = collision;
     }
 }
