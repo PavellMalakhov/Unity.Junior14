@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Combat _combat;
     [SerializeField] private Health _health;
-    
-    private float _forceAttack = 10f;
+
+    [SerializeField] private float _forceAttack = 10f;
 
     private void FixedUpdate()
     {

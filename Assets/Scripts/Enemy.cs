@@ -29,10 +29,7 @@ public class Enemy : MonoBehaviour
     {
         _animator.Play(Damage);
 
-        if (_health.TakeDamage(damage))
-        {
-            Destroy(gameObject);
-        }
+        _health.TakeDamage(damage);
     }
 
     public void SetCollider2DPlayerHitBox(Collider2D collision)

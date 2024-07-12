@@ -17,7 +17,7 @@ public class Pursuit : MonoBehaviour
 
             if (_hitinfo.collider == null && isPatroling == true)
             {
-                Debug.Log(gameObject.name + ": Увидел тебя!");
+                //Debug.Log(gameObject.name + ": Увидел тебя!");
 
                 targetPoint = player.transform.position;
                 isPatroling = false;
@@ -29,7 +29,7 @@ public class Pursuit : MonoBehaviour
 
             if (_hitinfo.collider == null && isPatroling == false)
             {
-                Debug.Log(gameObject.name + ": Вижу тебя!");
+                //Debug.Log(gameObject.name + ": Вижу тебя!");
 
                 targetPoint = player.transform.position;
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime * 2);
@@ -38,7 +38,7 @@ public class Pursuit : MonoBehaviour
 
             if (_hitinfo.collider != null && isPatroling == false)
             {
-                Debug.Log(gameObject.name + ": Видел тебя тут: " + targetPoint);
+                //Debug.Log(gameObject.name + ": Видел тебя тут: " + targetPoint);
 
                 transform.position = Vector2.MoveTowards(transform.position, targetPoint, moveSpeed * Time.deltaTime * 2);
                 SetLookDirection(targetPoint, scaleLeft, scaleRight);
