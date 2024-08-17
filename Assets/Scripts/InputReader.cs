@@ -8,6 +8,7 @@ public class InputReader : MonoBehaviour
 
     private bool _isJump;
     private bool _isAttack;
+    private bool _isUseSkill;
 
     public float Direction { get; private set; }
 
@@ -24,10 +25,16 @@ public class InputReader : MonoBehaviour
         {
             _isAttack = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _isUseSkill = true;
+        }
     }
 
     public bool GetIsJump() => GetBoolAsTrigger(ref _isJump);
     public bool GetAttack() => GetBoolAsTrigger(ref _isAttack);
+    public bool GetUseSkillk() => GetBoolAsTrigger(ref _isUseSkill);
 
     private bool GetBoolAsTrigger(ref bool value)
     {

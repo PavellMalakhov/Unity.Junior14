@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
-    private Enemy _enemy;
+    [SerializeField] private Enemy _enemy;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
