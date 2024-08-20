@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
     private readonly int IsWalk = Animator.StringToHash(nameof(IsWalk));
     private readonly int Attack = Animator.StringToHash(nameof(Attack));
     private readonly int Damage = Animator.StringToHash(nameof(Damage));
+    private readonly int _vampirismAnimation = Animator.StringToHash(nameof(_vampirismAnimation));
 
     [SerializeField] private GroundDetector _groundDetector;
     [SerializeField] private InputReader _inputReader;
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Combat _combat;
     [SerializeField] private Health _health;
+    [SerializeField] private Vampirism _vampirism;
 
     [SerializeField] private float _forceAttack = 10f;
 
@@ -38,6 +40,11 @@ public class Player : MonoBehaviour
             _animator.Play(Attack);
 
             _combat.Attack(_forceAttack);
+        }
+
+        if (_inputReader.GetUseSkillk())
+        {
+            _vampirism.UseSkill();
         }
     }
 

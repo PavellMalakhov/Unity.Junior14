@@ -24,11 +24,15 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public float TakeDamage(float damage)
     {
         if (damage > 0)
         {
+            float health—hange = _healthCurrent; 
+            
             _healthCurrent = Mathf.Clamp(_healthCurrent - damage, _healthMin, _healthMax);
+
+            health—hange -= _healthCurrent;
 
             HealthChanged?.Invoke(_healthCurrent, _healthMax);
 
@@ -36,6 +40,10 @@ public class Health : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+
+            return health—hange;
         }
+
+        return 0;
     }
 }
