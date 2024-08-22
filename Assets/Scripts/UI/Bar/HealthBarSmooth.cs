@@ -12,7 +12,6 @@ public class HealthBarSmooth : EventHandler
 
     protected override void RenderHealh(float health, float healthMax)
     {
-        //StopAllCoroutines();
         if (_renderHealth != null)
         {
             StopCoroutine(_renderHealth);

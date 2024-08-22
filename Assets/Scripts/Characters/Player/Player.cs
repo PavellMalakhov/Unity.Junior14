@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 
         if (_inputReader.GetUseSkillk())
         {
-            _vampirism.UseSkill();
+            _vampirism.TryUseSkill();
         }
     }
 

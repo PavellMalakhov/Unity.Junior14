@@ -138,6 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111670574}
   - component: {fileID: 111670576}
+  - component: {fileID: 111670577}
   m_Layer: 5
   m_Name: SkillBar (smooth) (1)
   m_TagString: Untagged
@@ -218,6 +219,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &111670577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111670573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d263ba602255ac4eb7f91168ff54a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slider: {fileID: 111670576}
+  _lerpSpeed: 1
+  _vampirism: {fileID: 1843520423}
 --- !u!1 &116255502
 GameObject:
   m_ObjectHideFlags: 0
@@ -14923,7 +14939,6 @@ MonoBehaviour:
   _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _vampirismVisualization: {fileID: 1843520425}
 --- !u!58 &1843520424
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14971,9 +14986,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8ed5146c2c2a5489cdf4f201656841, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skillBar: {fileID: 111670576}
   _animator: {fileID: 1514941403}
   _delay: 1
+  _vampirism: {fileID: 1843520423}
 --- !u!1 &1869287044
 GameObject:
   m_ObjectHideFlags: 0
