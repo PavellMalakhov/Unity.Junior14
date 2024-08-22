@@ -3,24 +3,24 @@ using System;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float _healthCurrent = 100f;
-    [SerializeField] private float _healthMax = 100f;
-    [SerializeField] private float _healthMin = 0f;
+    [SerializeField] private float _current = 100f;
+    [SerializeField] private float _max = 100f;
+    [SerializeField] private float _min = 0f;
 
     public event Action<float, float> HealthChanged;
 
     private void Start()
     {
-        HealthChanged?.Invoke(_healthCurrent, _healthMax);
+        HealthChanged?.Invoke(_current, _max);
     }
 
-    public void AddHealth(float amountHealth)
+    public void AddHealth(float amount)
     {
-        if (amountHealth > 0)
+        if (amount > 0)
         {
-            _healthCurrent = Mathf.Clamp(_healthCurrent + amountHealth, _healthMin, _healthMax);
+            _current = Mathf.Clamp(_current + amount, _min, _max);
 
-            HealthChanged?.Invoke(_healthCurrent, _healthMax);
+            HealthChanged?.Invoke(_current, _max);
         }
     }
 
@@ -29,19 +29,19 @@ public class Health : MonoBehaviour
         if (damage < 0)
             return 0;
 
-        float healthChange = _healthCurrent;
+        float delta = _current;
 
-        _healthCurrent = Mathf.Clamp(_healthCurrent - damage, _healthMin, _healthMax);
+        _current = Mathf.Clamp(_current - damage, _min, _max);
 
-        healthChange -= _healthCurrent;
+        delta -= _current;
 
-        HealthChanged?.Invoke(_healthCurrent, _healthMax);
+        HealthChanged?.Invoke(_current, _max);
 
-        if (_healthCurrent <= 0)
+        if (_current <= 0)
         {
             Destroy(gameObject);
         }
 
-        return healthChange;
+        return delta;
     }
 }

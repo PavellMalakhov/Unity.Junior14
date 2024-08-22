@@ -1489,9 +1489,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2e8e870742a8742b612bd523ea2d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthCurrent: 100
-  _healthMax: 100
-  _healthMin: 0
+  _current: 100
+  _max: 100
+  _min: 0
 --- !u!1 &391898735
 GameObject:
   m_ObjectHideFlags: 0
@@ -11203,9 +11203,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2e8e870742a8742b612bd523ea2d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthCurrent: 100
-  _healthMax: 100
-  _healthMin: 0
+  _current: 100
+  _max: 100
+  _min: 0
 --- !u!1 &1457615510
 GameObject:
   m_ObjectHideFlags: 0
@@ -14930,12 +14930,9 @@ MonoBehaviour:
   _absorbMana: 1
   _absorbManaMax: 1
   _absorbManaMin: 0
-  _sqrDistanceToEnemy: 0
   _healthPlayer: {fileID: 1670789330465925896}
   _healthEnemy: {fileID: 0}
-  _animator: {fileID: 1514941403}
   _inputReader: {fileID: 165408836}
-  _enemyColliders2D: []
   _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -16045,9 +16042,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2e8e870742a8742b612bd523ea2d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthCurrent: 30
-  _healthMax: 100
-  _healthMin: 0
+  _current: 30
+  _max: 100
+  _min: 0
 --- !u!212 &1857630455332626168
 SpriteRenderer:
   m_ObjectHideFlags: 0

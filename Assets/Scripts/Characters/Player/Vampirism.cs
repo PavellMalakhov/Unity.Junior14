@@ -11,43 +11,61 @@ public class Vampirism : MonoBehaviour
     [SerializeField] private float _absorbMana = 1f;
     [SerializeField] private float _absorbManaMax = 1f;
     [SerializeField] private float _absorbManaMin = 0f;
-    [SerializeField] private float _sqrDistanceToEnemy;
     [SerializeField] private Health _healthPlayer;
     [SerializeField] private Health _healthEnemy;
-    [SerializeField] private Animator _animator;
     [SerializeField] private Coroutine _absorbing;
     [SerializeField] private InputReader _inputReader;
-    [SerializeField] private Collider2D[] _enemyColliders2D;
     [SerializeField] private LayerMask _enemyLayerMask;
 
     public event Action<float, float> ManaChanged;
 
     public void TryUseSkill()
     {
-        DefineEnemiesCollider2Ds();
-
-        if (_enemyColliders2D.Length > 0 && _absorbing == null && _absorbMana == _absorbManaMax)
+        if (GetEnemiesCollider2Ds().Length > 0 && _absorbing == null && _absorbMana == _absorbManaMax)
         {
             _absorbing = StartCoroutine(Absorbing());
         }
     }
 
-    private void DefineEnemiesCollider2Ds()
+    private Collider2D[] GetEnemiesCollider2Ds() => Physics2D.OverlapCircleAll(transform.position, _vampirismRadius, _enemyLayerMask);
+
+    private void SetNearestEnemyHealth()
     {
-        _enemyColliders2D = Physics2D.OverlapCircleAll(transform.position, _vampirismRadius, _enemyLayerMask);
+        float sqrDistanceNearestEnemy = float.MaxValue;
+
+        Collider2D nearestEnemyCollider = null;
+
+        foreach (var enemyCollider in GetEnemiesCollider2Ds())
+        {
+            float sqrDistanceToEnemyCollider = (transform.position - enemyCollider.transform.position).sqrMagnitude;
+
+            if (sqrDistanceToEnemyCollider < sqrDistanceNearestEnemy)
+            {
+                sqrDistanceNearestEnemy = sqrDistanceToEnemyCollider;
+
+                nearestEnemyCollider = enemyCollider;
+            }
+        }
+
+        if (nearestEnemyCollider.TryGetComponent<Health>(out Health healthEnemy))
+        {
+            _healthEnemy = healthEnemy;
+        }
     }
 
     private IEnumerator Absorbing()
     {
         var wait = new WaitForEndOfFrame();
 
-        while (_enemyColliders2D.Length > 0 && _absorbMana > _absorbManaMin)
+        while (GetEnemiesCollider2Ds().Length > 0 && _absorbMana > _absorbManaMin)
         {
             SetNearestEnemyHealth();
 
-            _absorbMana -= Time.deltaTime / _absorbTime;
+            _absorbMana -= _absorbManaMax * (Time.deltaTime / _absorbTime);
 
-            Absorb();
+            ManaChanged?.Invoke(_absorbMana, _absorbManaMax);
+
+            _healthPlayer.AddHealth(_healthEnemy.TakeDamage(_vampirismForce * Time.deltaTime));
 
             yield return wait;
         }
@@ -55,44 +73,20 @@ public class Vampirism : MonoBehaviour
         if (_absorbing != null)
         {
             StopCoroutine(_absorbing);
+
             _absorbing = null;
         }
 
         StartCoroutine(ReloadSkill());
     }
 
-    private void SetNearestEnemyHealth()
-    {
-        _sqrDistanceToEnemy = float.MaxValue;
-
-        foreach (var enemyCollider in _enemyColliders2D)
-        {
-            var sqrDistanceToCurrentEnemy = (transform.position - enemyCollider.transform.position).sqrMagnitude;
-
-            if (sqrDistanceToCurrentEnemy < _sqrDistanceToEnemy)
-            {
-                _sqrDistanceToEnemy = sqrDistanceToCurrentEnemy;
-                _healthEnemy = enemyCollider.GetComponent<Health>();
-            }
-        }
-    }
-    
-    private void Absorb()
-    {
-        _healthPlayer.AddHealth(_healthEnemy.TakeDamage(_vampirismForce * Time.deltaTime));
-
-        DefineEnemiesCollider2Ds();
-
-        ManaChanged?.Invoke(_absorbMana, _absorbManaMax);
-    }
-
     private IEnumerator ReloadSkill()
     {
         var wait = new WaitForEndOfFrame();
 
-        while (_absorbMana != 1)
+        while (_absorbMana != _absorbManaMax)
         {
-            _absorbMana = Mathf.Clamp(_absorbMana + Time.deltaTime / _absorbReloadTime, _absorbManaMin, _absorbManaMax);
+            _absorbMana = Mathf.Clamp(_absorbMana + _absorbManaMax * (Time.deltaTime / _absorbReloadTime), _absorbManaMin, _absorbManaMax);
 
             ManaChanged?.Invoke(_absorbMana, _absorbManaMax);
 
