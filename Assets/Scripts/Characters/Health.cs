@@ -7,11 +7,11 @@ public class Health : MonoBehaviour
     [SerializeField] private float _max = 100f;
     [SerializeField] private float _min = 0f;
 
-    public event Action<float, float> HealthChanged;
+    public event Action<float, float> Changed;
 
     private void Start()
     {
-        HealthChanged?.Invoke(_current, _max);
+        Changed?.Invoke(_current, _max);
     }
 
     public void AddHealth(float amount)
@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
         {
             _current = Mathf.Clamp(_current + amount, _min, _max);
 
-            HealthChanged?.Invoke(_current, _max);
+            Changed?.Invoke(_current, _max);
         }
     }
 
@@ -35,7 +35,7 @@ public class Health : MonoBehaviour
 
         delta -= _current;
 
-        HealthChanged?.Invoke(_current, _max);
+        Changed?.Invoke(_current, _max);
 
         if (_current <= 0)
         {

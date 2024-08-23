@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public abstract class EventHandler : MonoBehaviour
+public abstract class EventHandler : Attribute
 {
     [SerializeField] protected Health _health;
 
     protected void OnEnable()
     {
-        _health.HealthChanged += RenderHealh;
+        _health.Changed += RenderHealh;
     }
 
     protected void OnDisable()
     {
-        _health.HealthChanged -= RenderHealh;
+        _health.Changed -= RenderHealh;
     }
 
     protected virtual void RenderHealh(float health, float healthMax) { }

@@ -12,7 +12,6 @@ public class Vampirism : MonoBehaviour
     [SerializeField] private float _absorbManaMax = 1f;
     [SerializeField] private float _absorbManaMin = 0f;
     [SerializeField] private Health _healthPlayer;
-    [SerializeField] private Health _healthEnemy;
     [SerializeField] private Coroutine _absorbing;
     [SerializeField] private InputReader _inputReader;
     [SerializeField] private LayerMask _enemyLayerMask;
@@ -21,21 +20,26 @@ public class Vampirism : MonoBehaviour
 
     public void TryUseSkill()
     {
-        if (GetEnemiesCollider2Ds().Length > 0 && _absorbing == null && _absorbMana == _absorbManaMax)
+        Collider2D[] enemiesCollider2Ds = GetEnemiesCollider2Ds();
+
+        if (enemiesCollider2Ds.Length > 0 && _absorbing == null && _absorbMana == _absorbManaMax)
         {
-            _absorbing = StartCoroutine(Absorbing());
+            _absorbing = StartCoroutine(Absorbing(enemiesCollider2Ds));
         }
     }
 
-    private Collider2D[] GetEnemiesCollider2Ds() => Physics2D.OverlapCircleAll(transform.position, _vampirismRadius, _enemyLayerMask);
+    private Collider2D[] GetEnemiesCollider2Ds()
+    {
+        return Physics2D.OverlapCircleAll(transform.position, _vampirismRadius, _enemyLayerMask);
+    }
 
-    private void SetNearestEnemyHealth()
+    private Health GetNearestEnemyHealth(Collider2D[] enemiesCollider2Ds)
     {
         float sqrDistanceNearestEnemy = float.MaxValue;
 
         Collider2D nearestEnemyCollider = null;
 
-        foreach (var enemyCollider in GetEnemiesCollider2Ds())
+        foreach (var enemyCollider in enemiesCollider2Ds)
         {
             float sqrDistanceToEnemyCollider = (transform.position - enemyCollider.transform.position).sqrMagnitude;
 
@@ -49,23 +53,25 @@ public class Vampirism : MonoBehaviour
 
         if (nearestEnemyCollider.TryGetComponent<Health>(out Health healthEnemy))
         {
-            _healthEnemy = healthEnemy;
+            return healthEnemy;
         }
+
+        return null;
     }
 
-    private IEnumerator Absorbing()
+    private IEnumerator Absorbing(Collider2D[] enemiesCollider2Ds)
     {
         var wait = new WaitForEndOfFrame();
 
-        while (GetEnemiesCollider2Ds().Length > 0 && _absorbMana > _absorbManaMin)
+        while (enemiesCollider2Ds.Length > 0 && _absorbMana > _absorbManaMin)
         {
-            SetNearestEnemyHealth();
-
             _absorbMana -= _absorbManaMax * (Time.deltaTime / _absorbTime);
 
             ManaChanged?.Invoke(_absorbMana, _absorbManaMax);
 
-            _healthPlayer.AddHealth(_healthEnemy.TakeDamage(_vampirismForce * Time.deltaTime));
+            _healthPlayer.AddHealth(GetNearestEnemyHealth(enemiesCollider2Ds).TakeDamage(_vampirismForce * Time.deltaTime));
+
+            enemiesCollider2Ds = GetEnemiesCollider2Ds();
 
             yield return wait;
         }
@@ -86,7 +92,9 @@ public class Vampirism : MonoBehaviour
 
         while (_absorbMana != _absorbManaMax)
         {
-            _absorbMana = Mathf.Clamp(_absorbMana + _absorbManaMax * (Time.deltaTime / _absorbReloadTime), _absorbManaMin, _absorbManaMax);
+            float manaIncrement = _absorbManaMax * (Time.deltaTime / _absorbReloadTime);
+
+            _absorbMana = Mathf.Clamp(_absorbMana + manaIncrement, _absorbManaMin, _absorbManaMax);
 
             ManaChanged?.Invoke(_absorbMana, _absorbManaMax);
 

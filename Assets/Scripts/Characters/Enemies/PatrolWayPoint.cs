@@ -34,7 +34,8 @@ public class PatrolWayPoint : MonoBehaviour
 
         if (_isPatroling)
         {
-            transform.position = Vector2.MoveTowards(transform.position, _wayPoints[_indexWayPoint].position, _moveSpeed * Time.deltaTime);
+            transform.position = 
+                Vector2.MoveTowards(transform.position, _wayPoints[_indexWayPoint].position, _moveSpeed * Time.deltaTime);
         }
 
         if (transform.position.x < _wayPoints[_indexWayPoint].position.x)
